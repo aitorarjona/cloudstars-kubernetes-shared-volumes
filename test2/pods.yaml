@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: process
+spec:
+  containers:
+    - image: aitorarjona/k8s-mmap-tests:latest
+      imagePullPolicy: Always
+      name: process
+      command: ["/bin/sh", "-ec", "sleep 1000"]
+      volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "1Gi"
+        limits:
+          cpu: "100m"
+          memory: "1Gi"
+  volumes:
+    - name: tmp
+      hostPath:
+        path: /tmp/mmap
+        type: DirectoryOrCreate

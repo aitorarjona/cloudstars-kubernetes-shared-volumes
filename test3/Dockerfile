@@ -6,12 +6,13 @@ RUN apt update \
 
 WORKDIR /app
 
-COPY procA.cpp procB.cpp ./
+COPY proc.cpp mem.cpp ./
 
 RUN g++ -Wall -O0 -o proc proc.cpp -lcrypto
+RUN g++ -Wall -O0 -o mem mem.cpp -lcrypto
 
 FROM ubuntu:22.04
 
 WORKDIR /app
 
-COPY --from=builder /app/proc ./
+COPY --from=builder /app/proc /app/mem ./

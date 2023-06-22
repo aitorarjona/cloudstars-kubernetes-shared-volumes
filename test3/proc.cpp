@@ -1,7 +1,4 @@
 #include <cstring>
-#include <string.h>
-#include <stdio.h>
-#include <string.h>
 #include <fcntl.h>
 #include <iostream>
 #include <unistd.h>
@@ -10,14 +7,13 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
-#include <openssl/md5.h>
 
-const int MEM_PAGE_SIZE = 4 * 1024;                // 4 KB
-const int BUFFER_SIZE = MEM_PAGE_SIZE * 65536 * 2; // 512 MB
+const long long MEM_PAGE_SIZE = 4 * 1024;              // 4 KB
+const long long BUFFER_SIZE = MEM_PAGE_SIZE * 2621440; // 10 GB
 
 int main(int argc, char *argv[])
 {
-    int fd = open("/tmp/my_file.txt", O_RDWR, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP);
+    int fd = open("/tmp/large_file.txt", O_RDWR, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP);
     if (fd == -1)
     {
         perror("open");
@@ -26,20 +22,11 @@ int main(int argc, char *argv[])
 
     char *mmap_ptr =
         reinterpret_cast<char *>(mmap(nullptr, BUFFER_SIZE, PROT_WRITE, MAP_SHARED, fd, 0));
-
     std::cout << "Buffer pointer: " << static_cast<void *>(&mmap_ptr) << std::endl;
 
-    std::cout << "Buffer content: " << mmap_ptr << std::endl;
-
     std::cout << "Press enter to continue..." << std::endl;
     std::cin.get();
 
-    strcpy(mmap_ptr, "Hello from process B\0");
-
-    std::cout << "Press enter to continue..." << std::endl;
-    std::cin.get();
-
-    // Iterate over the buffer and calculate md5 checksum
     unsigned char md5_checksum[MD5_DIGEST_LENGTH];
 
     MD5_CTX md5_context;
@@ -70,5 +57,5 @@ int main(int argc, char *argv[])
     }
     std::cout << "close " << res << std::endl;
 
-    return 0;
+    close(fd);
 }
