@@ -66,11 +66,14 @@ int main(int argc, char **argv)
 
     connect(sockfd, (struct sockaddr *)&servaddr, sizeof(servaddr));
 
-    fd = open(argv[2], O_RDONLY);
+    fd = open(argv[2], O_RDWR);
     write_fd(sockfd, "", 1, fd);
 
-    read(sockfd, buf, 2);
-    printf("read %s\n", buf);
+    printf("Press enter to continue...\n");
+    getchar();
+    lseek(fd, 0, SEEK_SET);
+    read(fd, buf, 1024);
+    printf("%s", buf);
 
     return 0;
 }

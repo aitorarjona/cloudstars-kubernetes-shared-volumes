@@ -86,7 +86,6 @@ int main(int argc, char **argv)
     bind(listenfd, (struct sockaddr *)&servaddr, sizeof(servaddr));
 
     listen(listenfd, 5);
-
     clilen = sizeof(cliaddr);
     connfd = accept(listenfd, (struct sockaddr *)&cliaddr, &clilen);
 
@@ -94,6 +93,9 @@ int main(int argc, char **argv)
 
     read(fd, buf, 1024);
     printf("%s", buf);
+
+    lseek(fd, 0, SEEK_SET);
+    write(fd, "Hola Mundo!", 11);
 
     return 0;
 }

@@ -51,6 +51,7 @@
         "typeinfo": "cpp",
         "stat.h": "c",
         "un.h": "c",
-        "fstream": "c"
+        "fstream": "c",
+        "stdio.h": "c"
     }
 }

@@ -9,17 +9,12 @@ spec:
       name: process-sender
       command: ["/bin/sh", "-ec", "sleep 1000"]
       volumeMounts:
-        - name: tmp
-          mountPath: /tmp
         - name: sock
           mountPath: /sock
   volumes:
-    - name: tmp
-      emptyDir:
-        medium: Memory
     - name: sock
       hostPath:
-        path: /tmp/mmap
+        path: /tmp/sock
         type: DirectoryOrCreate
 ---
 apiVersion: v1
@@ -33,15 +28,10 @@ spec:
       name: process-receiver
       command: ["/bin/sh", "-ec", "sleep 1000"]
       volumeMounts:
-        - name: tmp
-          mountPath: /tmp
         - name: sock
           mountPath: /sock
   volumes:
-    - name: tmp
-      emptyDir:
-        medium: Memory
     - name: sock
       hostPath:
-        path: /tmp/mmap
+        path: /tmp/sock
         type: DirectoryOrCreate

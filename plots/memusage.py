@@ -2,6 +2,44 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
+plt.rcParams.update(
+    {
+        "text.usetex": True,
+        # "font.family": "serif",
+        "pgf.texsystem": "pdflatex",
+        "font.size": 9,
+        # "font.size": 10,
+        # "pgf.preamble": "\n".join(
+        #     [
+        #         r"\usepackage{libertine}",
+        #         # r"\usepackage{lmodern}",
+        #     ]
+        # ),
+        # "lines.linewidth": 0.8,
+        "lines.markersize": 3,
+        # "axes.linewidth": 0.5,
+        # "grid.linewidth": 0.3,
+        "grid.linestyle": ":",
+        # "axes.edgecolor": matplotlib.rcParams["grid.color"],
+        # "ytick.color": matplotlib.rcParams["grid.color"],
+        # "ytick.direction": "in",
+        # "xtick.color": matplotlib.rcParams["grid.color"],
+        # "xtick.direction": "in",
+        # "axes.titlesize": "medium",
+        # "axes.titlepad": 2,
+        # "axes.labelpad": 1,
+        # "axes.spines.top": False,
+        # "axes.spines.right": False,
+        # "axes.spines.bottom": False,
+        # "axes.spines.left": False,
+        # "legend.labelspacing": 0,
+        # "legend.handlelength": 1,
+        # "legend.handletextpad": 0.2,
+        # "legend.columnspacing": 1,
+        # "legend.borderpad": 0,
+    }
+)
+
 procA = [
     2424832,
     2363392,
@@ -102,12 +140,14 @@ procB = [
 
 
 if __name__ == "__main__":
-    sns.set_theme()
+    # sns.set_theme()
 
     fig, ax = plt.subplots()
 
     ax.plot(np.arange(0, len(procA)), np.asarray(procA) * 1e-6, label="Writer process")
     ax.plot(np.arange(0, len(procB)), np.asarray(procB) * 1e-6, label="Reader process")
+
+    ax.grid(ls=":", alpha=0.5)
 
     ax.set_xlabel("Wallclock time (s)")
     ax.set_ylabel("cgroups memory usage (MB)")
@@ -115,6 +155,7 @@ if __name__ == "__main__":
     ax.set_yscale("log")
 
     ax.legend()
+    fig.set_size_inches(4, 3)
     fig.tight_layout()
 
-    plt.savefig("plot1.png", dpi=500)
+    plt.savefig("mem_usage_writer_reader.pdf")
